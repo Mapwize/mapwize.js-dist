@@ -1,0 +1,14 @@
+{
+  "author": "Mapwize",
+  "name": "mapwize.js",
+  "description": "Mapwize Javascript SDK",
+  "version": "1.0.0",
+  "homepage": "http://www.mapwize.io/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mapwize/mapwize.js-dist"
+  },
+  "main": "dist/mapwize.js",
+  "style": "dist/mapwize.css",
+  "dependencies": {}
+}

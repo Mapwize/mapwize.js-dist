@@ -1,0 +1,17 @@
+{
+  "name": "mapwize.js",
+  "main": [
+    "dist/mapwize.js",
+    "dist/mapwize.css"
+  ],
+  "version": "1.0.0",
+  "homepage": "https://github.com/mapwize/mapwize.js-dist",
+  "authors": ["Mapwize"],
+  "description": "Mapwize Javascript SDK",
+  "keywords": ["mapwize", "indoor", "inside", "building", "map", "maps", "leaflet"],
+  "license": "See LICENSE.md",
+  "ignore": [
+    "demo",
+    "doc"
+  ]
+}
