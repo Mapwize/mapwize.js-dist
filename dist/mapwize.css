@@ -259,7 +259,9 @@
 .mapwize-control a.hasDirection,
 .mapwize-control a.hasDirection:hover {
 	border-left: 4px solid #C51586;
-	width: 46px;
+	width: 50px;
+
+    box-sizing: border-box;
 }
 .leaflet-touch .mapwize-control a,
 .leaflet-touch .mapwize-control a:hover,
@@ -538,4 +540,43 @@
 	text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff;
 
 	white-space: nowrap;
+}
+
+.mapwize-marker-icon {
+	display: block;
+	background-image: url("./images/pointer.png");
+	background-size: contain;
+	height: 40px;
+	width: 30px;
+}
+
+/*  */
+.mwzDirectionChangeFloorIcon {
+	background-color: #C51586;
+	color: white;
+	border-radius: 3px;
+	text-align: center;
+}
+
+.mwzDirectionChangeFloorIcon .part {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.mwzDirectionChangeFloorIcon .up {
+	-ms-transform: rotate(-90deg); /* IE 9 */
+	-webkit-transform: rotate(-90deg); /* Chrome, Safari, Opera */
+	transform: rotate(-90deg);
+}
+
+.mwzDirectionChangeFloorIcon .down {
+	-ms-transform: rotate(90deg); /* IE 9 */
+	-webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+	transform: rotate(90deg);
+}
+
+.mwzDirectionChangeFloorIcon .toFloor {
+	font-weight: bold;
+
+	/*top: 2px;*/
 }

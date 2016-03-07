@@ -7,11 +7,7 @@ The SDK allows you to:
 - Display the map of buildings, with all floors and places.
 - Add your own data on the map.
 - Locate the user inside the building.
-
-and coming soom:
-
-- Display directions between 2 points, across multiple floors and buildings.
-
+- Display directions between 2 points, across multiple floors.
 
 ## Access to the platform
 
