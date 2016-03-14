@@ -2,7 +2,7 @@
   "author": "Mapwize",
   "name": "mapwize.js",
   "description": "Mapwize Javascript SDK",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "homepage": "https://www.mapwize.io/",
   "repository": {
     "type": "git",
