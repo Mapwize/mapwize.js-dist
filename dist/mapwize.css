@@ -542,6 +542,31 @@
 	white-space: nowrap;
 }
 
+.mapwize-div-icon .placeIcon.stylized {
+	width: 30px;
+	height: 30px;
+
+	padding: 5px;
+
+	box-sizing: border-box;
+
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+.mapwize-div-icon .placeIcon.stylized .iconLabel {
+	height: 30px;
+
+	margin-left: 5px;
+	padding-right: 10px;
+	padding-top: 4px;
+	margin-top: -5px;
+
+	box-sizing: border-box;
+
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
 .mapwize-marker-icon {
 	display: block;
 	background-image: url("./images/pointer.png");
