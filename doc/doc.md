@@ -107,7 +107,7 @@ You can display directions on the map between 2 points.
 The from and the to parameters are objects which can have the following properties:
 
 	{
-		placeId: string (the Id of a place. If used, lat/lon/floor are ignored)
+		placeId: string (the Id of a place. If used, latitude/longitude/floor are ignored)
 		latitude: number (if used, all latitude/longitude/floor are required)
 		longitude: number (if used, all latitude/longitude/floor are required)
 		floor: number (if used, all latitude/longitude/floor are required)
@@ -245,6 +245,12 @@ You can lock the user position to the current position using the method lockUser
 
 The method setUserPosition overrules all the previous rules and sets the user position until unlockUserPosition is called.
 
+### Setting the user heading
+When a compass is available, it can be interesting to display the direction the user is looking. To do so, the method setUserHeading can be used, giving it an angle in degree. Example if the user is looking south:
+
+	map.setUserHeading(180);
+	
+To remove the display of the compass, simply set the angle to null.
  
 ## Setting the map based on URL
 
@@ -258,118 +264,7 @@ To load a URL, use the following method:
 
 	map.loadURL('url')
 
-### User position
-
-An URL refering to a beacon (QR-code or Eddystone) displayes the map centered on the user with the user position defined by the position of the beacon.
-
-A beacon can be refered in 2 ways:
-
-- by a code with at least 3 characters
-- by an alias linked to the venue
-
-Format:
-
-	http://mwz.io/{code}
-	http://mwz.io/b/{venueAlias}/{beaconAlias}
-		
-Example:
-	
-	http://mwz.io/idk
-	http://mwz.io/b/myvenue/display1
-		
-### Pointer on a position
-
-The following URLs will center the map on the specified position but will not affect the user position
-
-#### Venue
-
-The venue is refered by it's alias. The alias is a string that has to be unique accross all venues on the Mapwize platform.
-
-Optionnaly, a floor can be specified.
-
-Format:
-
-	http://mwz.io/v/{venueAlias}
-	http://mwz.io/v/{venueAlias}/{floor}
-	
-Example:
-	
-	http://mwz.io/v/myvenue
-	http://mwz.io/v/myvenue/2
-	
-#### Place
-
-The place is refered by it's alias and the alias of the venue it belongs to. The place alias is a string that has to be unique accross all places inside a venue.
-
-Format:
-
-	http://mwz.io/p/{venueAlias}/{placeAlias}
-	
-Example:
-	
-	http://mwz.io/p/myvenue/myplace
-	
-#### Coordinates
-
-A position can be specified using geographic coordinates: latitude, longitude, floor. The floor is optional.
-
-Format:
-
-	http://mwz.io/c/{latitude}/{longitude}
-	http://mwz.io/c/{latitude}/{longitude}/{floor}
-	
-Example:
-	
-	http://mwz.io/c/50.633034048250735/3.0200868844985957
-	http://mwz.io/c/50.633034048250735/3.0200868844985957/2
-	
-### Directions
-
-URLs can also be generated to encode the starting and ending point of a direction. Beacon codes, places or coordinates can be used for the from and to.
-
-Format:
-
-	http://mwz.io/f/.../t/...
-	
-	http://mwz.io/f/{code}/t/p/{venueAlias}/{placeAlias}
-	http://mwz.io/f/b/{venueAlias}/{beaconAlias}/t/p/{venueAlias}/{placeAlias}
-	http://mwz.io/f/p/{venueAlias}/{placeAlias}/t/p/{venueAlias}/{placeAlias}
-	http://mwz.io/f/c/{latitude}/{longitude}/{floor}/t/p/{venueAlias}/{placeAlias}
-	
-Example:
-	
-	http://mwz.io/f/idk/t/p/myvenue/myplace
-	http://mwz.io/f/b/myvenue/display1/t/p/myvenue/myplace
-	http://mwz.io/f/p/myvenue/myplace/t/p/myvenue/secondplace
-	http://mwz.io/f/c/50.633034048250735/3.0200868844985957/2/t/p/myvenue/secondplace
-
-### Parameters
-
-The following parameters can be added to (almost) all URLs
-
-#### Zoom
-
-The zoom parameter can be used to specify the zoom at which the map will be displayed.
-
-Format:
-	
-	?z={zoom}
-	
-Example:
-	
-	?z=19
-	
-#### Access key
-
-An access key can be added to open access to a restricted venue.
-
-Format:
-	
-	?k={key}
-	
-Example:
-	
-	?k=myAccessKey
+The complete documentation regarding the URL format can be found [in the mapwize-url-scheme repository on github](https://github.com/Mapwize/mapwize-url-scheme).
 
 
 ## Adding markers
@@ -496,7 +391,6 @@ You can pass the access key directly when initializing the map:
 		accessKey: 'YOUR KEY'
 	});
 
-<!--
 Or you can use the access method
 
 	map.access('key', function (result) {
@@ -507,21 +401,64 @@ Or you can use the access method
 			// ERROR, key is not valid
 		}
 	});
-	
-To add the key button to the map (by default at top right):
 
-	var accessControl = Mapwize.accessControl({
-		onClick: function() {
-			/* enter the access key */  
-			map.access(key, function (result) {
-				if (result) {
-					// NO error, key is valid
-                }
-                else {
-                	// ERROR, key is not valid
-                }
-			});
-		}
+## Cache
+To prevent too many network requests while browsing the map, the SDK keeps a cache of some data it already downloaded.
+
+The Time To Live of the cache is 5 minutes.
+
+If you want to force the map to refresh the cache and update itself, you can call the refresh method anytime.
+
+	map.refresh();
+	
+## Margins
+It often happens that part of the map is hidden by banners or controls on the top or on the bottom. For example, if you display a banner to show the details of the place you just clicked on, it's better to display the banner on top of the map than having to resize the map.
+
+However, you want to make sure that the Mapwize controls are always visible, like the followUserMode button and the floor selector. Also, that if you make a fitBounds, the area will be completely in the visible part of the map.
+
+For this purpose, you can set a top and a bottom margin on the map. We garantee that nothing important will be displayed in those margin areas.
+
+To set the margins, you can pass them in pixels when you intialize the map:
+
+	var map = Mapwize.map('map', {
+		marginTop: 50,
+		marginBottom: 50
 	});
-	accessControl.addTo(map);
--->
+
+Or you can change them at runtime
+
+	map.setTopMargin(50);
+	map.setBottomMargin(50);
+	
+## Modify Place Style
+The style of a place can be modifyed directly within the SDK and can then override the style sent by the server. This is the best way to make changes in real-time on the map as it does not require to contact the Mapwize servers. For example, this can be used to display the availability of a meeting room.
+
+	map.setPlaceStyle(placeId, style);
+	
+where style is an object with the format:
+
+	{
+		markerUrl: string (An url to the icon of the marker. Must be an image, ideally png, square, 100*100 pixels),
+        strokeColor: string (The color of the shape border as #hex),
+        strokeOpacity: number (The opacity of the border, between 0 and 1),
+        strokeWidth: number (The width of the border),
+        fillColor: string (The color of the inside of the shape as #hex),
+        fillOpacity: number (The opacity of the inside, between 0 and 1),
+        labelBackgroundColor: string (The color of the backgroud of the label as #hex),
+        labelBackgroundOpacity: number (The opacity of the background of the label, between 0 and 1)
+	}
+
+example:
+
+	{
+		markerUrl: 'http://myserver.com/image.png',
+       	strokeColor: '#C51586',
+        strokeOpacity: 1,
+        strokeWidth: 2,
+        fillColor: '#FFFFFF',
+        fillOpacity: 0.3,
+        labelBackgroundColor: null,
+        labelBackgroundOpacity: null
+	}
+
+Note that if a parameter is null, the value defined on the server will be used.
