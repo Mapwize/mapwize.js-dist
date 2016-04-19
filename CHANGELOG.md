@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 1.4.2
+
+- Places are dispayed in the order defined on the server.
+
 ## Version 1.4.1
 
 - Added possibility to display user heading
