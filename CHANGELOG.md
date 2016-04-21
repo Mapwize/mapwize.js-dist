@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 1.4.4
+
+- Bug fix getLayers
+- Bug fix setStyle
+- Bug fix scroll floor control
+
 ## Version 1.4.3
 
 - Bug fix
