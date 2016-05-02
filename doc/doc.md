@@ -24,7 +24,7 @@ The simplest way to display Mapwize:
 			<div id="map"></div>
 
 			<script>
-				var map = Mapwize.map('map' {
+				var map = Mapwize.map('map', {
         			apiKey: {{YOUR API KEY HERE}}
     			});
 			</script>
@@ -108,6 +108,7 @@ The from and the to parameters are objects which can have the following properti
 
 	{
 		placeId: string (the Id of a place. If used, latitude/longitude/floor are ignored)
+		placeListID: string (the Id of a placeList. If used, placeId/latitude/longitude/floor are ignored)
 		latitude: number (if used, all latitude/longitude/floor are required)
 		longitude: number (if used, all latitude/longitude/floor are required)
 		floor: number (if used, all latitude/longitude/floor are required)

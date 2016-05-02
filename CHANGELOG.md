@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Version 1.5
+
+- Possibility to request shortest path to list of places (closest place of list is automatically selected)
+- Places and layers are displayed at zoom 16 instead of 18
+- Improved display of the outdoor places and directions
+- Added Mapwize.api methods
+- General improvements
+
 ## Version 1.4.4
 
 - Bug fix getLayers
