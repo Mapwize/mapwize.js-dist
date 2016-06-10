@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Version 1.6
+
+- Support for multilingual venues
+- Support for storing custom "data" on venues, places, placeLists and beacons
+- Added callback on Mapwize.map
+- Introducing venueEnter and venueExit events
+
 ## Version 1.5
 
 - Possibility to request shortest path to list of places (closest place of list is automatically selected)

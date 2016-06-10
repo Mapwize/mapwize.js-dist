@@ -26,6 +26,8 @@ The simplest way to display Mapwize:
 			<script>
 				var map = Mapwize.map('map', {
         			apiKey: {{YOUR API KEY HERE}}
+    			}, function () {
+    			    console.log('map is now loaded');
     			});
 			</script>
 
@@ -45,6 +47,14 @@ On the full map, everything is displayed:
 - Layers with floor selector
 - Places with shapes and markers
 - Button to position yourself and enable the tracking
+
+## Map constructor
+
+    Mapwize.map(mapId, options, callback);
+    
+    mapId: The id of the html div where the map should be created
+    options: The options for the map (see further for all possible options)
+    callback: function(err) The callback function called when the map is initialized, with errors if any. 
 
 ## Limit the visible area
 The area the user can browse can be limited to a given bound. To do so, use the Leaflet map options `maxBounds` and `minZoom` at initialization of the map. Example:
@@ -366,6 +376,19 @@ Fired when FollowUserMode changed.
 		console.log('followUserMode new value: ' + e.followUserMode);
 	});
 
+### venue enter
+Fired when a venue is displayed (zoom level >= 16 and center of the map inside the venue)
+
+	map.on('venueEnter', function(e){
+		console.log('Venue entered: ' + e.venue);
+	});
+
+### venue exit
+Fired when leaving the venue that was previously entered 
+
+	map.on('venueExit', function(e){
+		console.log('Venue exited: ' + e.venue);
+	});
 
 ## QR-code
 If you have retrieved a QR-code and want to pass it to the SDK, you can use the following method and pass the QR-code payload:
@@ -463,3 +486,23 @@ example:
 	}
 
 Note that if a parameter is null, the value defined on the server will be used.
+
+## Multilingual venues
+Venues can support multiple languages.
+By default, venues are displayed in their default language configured on the backend-side.
+Using the function
+
+    map.setPreferredLanguage(language);
+    
+it is possible to set the preferred language of the user. If a venue supports the preferred language, it will be displayed in that language.
+Otherwise, it will be displayed in the default language.
+
+Languages are defined using 2 letter codes like 'en', 'fr', ...
+
+Setting the preferred language to null displays all venues in their default language.
+
+## Adding custom data to objects
+To define specific behavior in your app for venues, places, placeLists or beacons, it is handy to attach custom data to those objects.
+Data can be added using the API or the backend interface.
+Data are retrieved in the objects under the property "data".
+
