@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 1.6.1
+
+- Improvements to the initialization sequence
+- Demo building now requires an accessKey
+
 ## Version 1.6
 
 - Support for multilingual venues
