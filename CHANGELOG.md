@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Version 1.7.1
+
+- Renamed Mapwize.api to Mapwize.Api
+- Introducing Mapwize.Location service
+- Added support for isVisible and isClickable places
+- Added support for custom connector icons
+- Added callbacks in asynchronous methods
+
 ## Version 1.6.1
 
 - Improvements to the initialization sequence
