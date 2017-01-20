@@ -551,7 +551,8 @@ only screen and (min-device-pixel-ratio: 1.5) {
 }
 
 
-/* div icon */
+/* ------------------ */
+/* div icon for places */
 
 .leaflet-div-icon {
 	background: #fff;
@@ -567,22 +568,13 @@ only screen and (min-device-pixel-ratio: 1.5) {
 .mapwize-div-icon {
 	white-space: nowrap;
 }
-.mapwize-div-icon .iconLabel {
-	position: absolute;
 
-	margin-left: 3px;
-
-	font-size: 1.2em;
-	text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff;
-
-	white-space: nowrap;
-}
-
-.mapwize-div-icon .placeIcon.stylized {
+.mapwize-div-icon .placeIcon {
 	width: 30px;
 	height: 30px;
 
 	padding: 5px;
+	padding-right: 3px;
 	margin-top: -5px;
 	margin-left: -5px;
 
@@ -591,19 +583,43 @@ only screen and (min-device-pixel-ratio: 1.5) {
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
 }
-.mapwize-div-icon .placeIcon.stylized .iconLabel {
+.mapwize-div-icon .placeIcon .iconLabel {
+	position: absolute;
+
+	display: inline-block;
+
 	height: 30px;
 
 	margin-left: 5px;
 	padding-right: 10px;
-	padding-top: 4px;
 	margin-top: -5px;
 
 	box-sizing: border-box;
 
+	text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff;
+
+	white-space: nowrap;
+
 	border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;
 }
+
+.mapwize-div-icon .placeIcon .iconLabel .title {
+	margin-top: 8px;
+
+	font-size: 1.1em;
+	line-height: 1.1em;
+}
+.mapwize-div-icon .placeIcon .iconLabel.hasSubtitle .title {
+	margin-top: 3px;
+}
+
+.mapwize-div-icon .placeIcon .iconLabel .subtitle {
+	font-size: 0.9em;
+	line-height: 0.9em;
+}
+
+/* ------------------ */
 
 .mapwize-marker-icon {
 	display: block;

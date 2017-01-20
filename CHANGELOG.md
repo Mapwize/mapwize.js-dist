@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 2.0.2
+
+- Optimized performances deep inside
+- Added advanced parser for Mapwize URL
+- Added configuration for outdoorMapProvider
+
 ## Version 1.7.1
 
 - Renamed Mapwize.api to Mapwize.Api

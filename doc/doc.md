@@ -2,14 +2,16 @@
 
 The SDK is built as a [Leaflet](http://leafletjs.com/) plugin. Leaflet is included in the package so you don't have to worry about importing it. Mapwize.js is all you need.
 
-The package is exposed both in `L.Mapwize` and simply as `Mapwize`.
+The package is exposed as `Mapwize`.
 
 Here are the specific instructions for using Mapwize. Please refer to the [Leaflet Doc](http://leafletjs.com/reference.html) for all the Leaflet related options.
 
 ----------
 
 ## Summary
-* <a href="#_display-map">Display the Mapwize map</a>
+* <a href="#_install-mapwize">Install Mapwize</a>
+* <a href="#_apiKey">Enter api key</a>
+* <a href="#_display-map">Display a Mapwize map</a>
 * <a href="#_map-constructor">Map constructor</a>
 * <a href="#_limit-area">Limit the visible area</a>
 * <a href="#_center-map">Center the map</a>
@@ -28,6 +30,7 @@ Here are the specific instructions for using Mapwize. Please refer to the [Leafl
 	* <a href="#_multiple-sources">Using multiple measurement sources</a>
 	* <a href="#_set-heading">Setting the user heading</a>
 * <a href="#_urls">Setting the map based on URL</a>
+* <a href="#_urlsParser">Parse a mapwize URL</a>
 * <a href="#_markers">Adding markers</a>
 * <a href="#_events">Listen for events</a>
 	* <a href="#_event-click">`click`</a>
@@ -50,6 +53,7 @@ Here are the specific instructions for using Mapwize. Please refer to the [Leafl
 * <a href="#_margins">Margins</a>
 * <a href="#_place-style">Modify Place Style</a>
 * <a href="#_multilingual">Multilingual venues</a>
+* <a href="#_outdoorProvider">Outdoor map provider</a>
 * <a href="#_custom-data">Adding custom data to objects</a>
 * <a href="#_api">Api</a>
 	* <a href="#_api-venues">Venues</a>
@@ -62,28 +66,51 @@ Here are the specific instructions for using Mapwize. Please refer to the [Leafl
 
 ----------
 
+## <a id="_install-mapwize"></a> Install Mapwize
+
+### Bower
+
+Run `bower install mapwize.js-dist --save`
+
+Import Javascript and css files in your html:
+    
+    <script type="text/javascript" src="path/to/mapwizeFolder/dist/mapwize.js"></script>
+    <link rel="stylesheet" href="path/to/mapwizeFolder/dist/mapwize.css" />
+    
+## <a id="_apiKey"></a>Setup your api key
+If you have to use a mapwize service without loading the map, you can setup your api key as follow:
+
+    Mapwize.setApiKey(<your_api_key>);
+
 ## <a id="_display-map"></a>Display the Mapwize map
-The simplest way to display Mapwize:
+The simplest way to display a Mapwize map:
 
 	<html>
 		<head>
-			<script src="mapwize.js" type="text/javascript"></script>
+			<script type="text/javascript" src="mapwize.js"></script>
 			<link rel="stylesheet" href="mapwize.css" />
 			<style>
-                #map {
+                #myMapId {
                     height: 500px;
                 }
             </style>
 		</head>
 		<body>
 
-			<div id="map"></div>
+			<div id="myMapId"></div>
 
 			<script>
-				var map = Mapwize.map('map', {
+				Mapwize.map('myMapId', {
         			apiKey: {{YOUR MAPWIZE API KEY HERE}}
-    			}, function () {
-    			    console.log('map is now loaded');
+    			}, function (err, mapInstance) {
+    			    // This callback is called when the map is initialized (Or if there is an error during initialization)
+    			    
+    			    if (err) {
+    			        console.error('An error occur during map initialization', err);
+    			    }
+    			    else {
+    			        console.log('map is now loaded');
+    			    }
     			});
 			</script>
 
@@ -96,7 +123,7 @@ There has to be a div for where the map is going to go. This div can have a css 
     	position:absolute; top:0; bottom:0; width:100%; height: 100%;
     }
 
-for a full screen display. Pay attention to have `<div id="map"></div>` and not `<div id="map"/>` as the second case will NOT work. This seems to be linked to Leaflet.
+for a full screen display. Pay attention to have `<div id="myMapId"></div>` and **not** `<div id="myMapId"/>` as the second case will NOT work.
 
 On the full map, everything is displayed:
 
@@ -112,13 +139,12 @@ On the full map, everything is displayed:
     
     mapId: The id of the html div where the map should be created
     options: The options for the map (see further for all possible options)
-    callback: function(err) The callback function called when the map is initialized, with errors if any.
+    callback: function(err, mapInstance) The callback function called when the map is initialized, with errors if any, and the map instance.
 
-All of possible options (in addition to <a href="http://leafletjs.com/reference.html#map-options">all leaflet options</a>):
+Possible map options (in addition to <a href="http://leafletjs.com/reference.html#map-options">all leaflet options</a>):
 
- - `apiKey` *(String, required)* Your Mapwize api key, find it in the Admin portal under the  **Applications** menu
+ - `apiKey` *(String, **required**)* Your Mapwize api key, find it in the Admin portal under the  **Developers/Applications** menu
  - <a href="#_access-key">`accessKey`</a> *(String, optionnal)* A Mapwize access key to access private venues. If necessary, it can be generated in the Admin portal.
- - `displayOutdoorMap` *(Boolean, optionnal, default: true)* If `true`, the default background map is displayed. Set to `false` if you want to use another background map.
  - `displayLayers` *(Boolean, optionnal, default: true).* If `true`, Mapwize **layers** are displayed on the map
  - `displayVenues` *(Boolean, optionnal, default: true).* If `true`, Mapwize **venues** are displayed on the map
  - `displayPlaces` *(Boolean, optionnal, default: true).* If `true`, Mapwize **places** are displayed on the map
@@ -134,6 +160,7 @@ All of possible options (in addition to <a href="http://leafletjs.com/reference.
  - `marginTop` *(Integer, optionnal, default: 0)* <a href="#_margins">See the Margins section</a>
  - `marginBottom` *(Integer, optionnal, default: 0)* <a href="#_margins">See the Margins section</a>
  - `language` *(String, optionnal, default: null)* <a href="#_multilingual">See the Multilingual section</a>
+ - `outdoorMapProvider` *(String, optional, default:null) <a href="#_outdoorProvider">See the OutdoorMapProvider section</a>
 
 ## <a id="_limit-area"></a>Limit the visible area
 The area the user can browse can be limited to a given bound. To do so, use the Leaflet map options `maxBounds` and `minZoom` at initialization of the map. Example:
@@ -182,7 +209,7 @@ You can center the map on a given place by calling `centerOnPlace` with either a
 	map.centerOnPlace(place);
 	
 ### <a id="_fit-area"></a>Fit a given area
-You can set the map so that a given bount is completely displayed.
+You can set the map so that a given bound is completely displayed.
 
 	map.fitBounds([
 	    [40.712, -74.227],
@@ -275,13 +302,13 @@ You can manage the followUserMode using the following commands:
 	
 ### <a id="_center-user"></a>Center map on user position
 
-To center the map on the current user positon, you can use the `centerOnUser` method. The method takes a minZoom parameter. If the current zoom of the map is lower than minZoom, then the map is zoomed to minZoom.	
+To center the map on the current user position, you can use the `centerOnUser` method. The method takes a minZoom parameter. If the current zoom of the map is lower than minZoom, then the map is zoomed to minZoom.	
 
 	map.centerOnUser(19);
 
 ### <a id="_get-user"></a>Get user position
 
-You can get the current user positon using the method
+You can get the current user position using the method
 
 	map.getUserPosition()
 	
@@ -359,34 +386,77 @@ The URLs always start with http://mwz.io/
 
 To load a URL, use the following method:
 
-	map.loadURL('url')
+	map.loadURL(url)
 
 The complete documentation regarding the URL format can be found [in the mapwize-url-scheme repository on github](https://github.com/Mapwize/mapwize-url-scheme).
 
 ----------
 
-## <a id="_markers"></a>Adding markers
+## <a id="_urlsParser"></a>Parse a mapwize URL
+
+     Mapwize.Url.parse(url, callback);
+     
+The callback function returns an error (if any) and the parsed object in the following format
+    
+    {
+        - venue: the venue object to which the url relates.
+        - universe: the universe object if the ?u parameter is specified in the url 
+        - language: the language code if the ?l parameter is specified in the url 
+        - outdoorMapProvider: the outdoor map provider if the ?outdoorMapProvider is specified in the url
+        - accessKey: the accessKey if the ?k parameter is specified in the url.
+        - floor: the value of the floor if specified in the url, or the floor of the place, or the start floor of the direction 
+        - zoom: the zoom if ?z parameter is specified 
+        - userPosition: a user position object with lat lon floor if the url is a beacon, or if the direction starts from the beacon 
+        - from: object with the origin of the direction if direction url starting from the place.
+        - to: object with the venue, place or placelist for related urls or the destination of the direction.
+        - direction: direction object if it's a direction url, or null 
+        - bounds: the bounds that should be set to the map to properly display the url 
+    }
+
+## <a id="_markers"></a>Markers
+
+### <a id="_markers-add"></a>Adding marker
 
 You can add markers on the map to show a position of interest. At this points, marker are static elements and users cannot interact with them.
 
 To add a marker, use the function
 
-	map.addMarker(position)
+	map.addMarker(position, callback)
 
-where position is an object with the following properties:
+where `position` is an **object** with the following properties (with same priority order):
+
+*A full place object*
+
+OR
 
 	{
-		placeId: string (the Id of a place. If used, latitude/longitude/floor are ignored)
 		latitude: number (if used, longitude is required)
 		longitude: number (if used, latitude is required)
-		floor: number (can be null) 
+		floor: number (can be null)
 	}
+
+OR
+
+<a href="#_api-places-get">*Same params as api get place*</a>
+
+The `callback` function take 2 params:
+(*Object*) `err` if an error has occurred
+(*String*) `markerId` an uniq id for this marker
+
+### <a id="_markers-remove"></a>Remove marker
+#### <a id="_markers-remove-one"></a>Remove one marker
+
+To remove only one marker, use the function
+
+    map.removeMarker(markerId);
+
+`markerId` is returned by <a href="#_markers-add">addMarker</a> callback
+
+#### <a id="_markers-remove-all"></a>Remove all markers
 	
 To remove all the markers at once, use the function
 
-	map.removeMarkers()
-
-At this point, it is not possible to only remove a single marker.
+	map.removeMarkers();
 
 ----------
 
@@ -616,6 +686,13 @@ Setting the preferred language to null displays all venues in their default lang
 
 ----------
 
+## <a id="_outdoorProvider"></a>Outdoor map provider
+Available map provider : 'mapbox-street', 'mapbox', 'mapbox-satellite', 'tomtom-street', 'tomtom', 'none'
+
+If you don't set a specific provider, our default outdoor will be displayed
+
+----------
+
 ## <a id="_custom-data"></a>Adding custom data to objects
 To define specific behavior in your app for venues, places, placeLists or beacons, it is handy to attach custom data to those objects.
 Data can be added using the API or the backend interface.
@@ -701,7 +778,7 @@ Get a list of venues
 
 ### <a id="_api-places"></a>Places
 
-#### get
+#### <a id="_api-places-get"></a>get
 
     Mapwize.Api.places.get(options, callback);
 
