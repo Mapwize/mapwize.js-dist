@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## Version 2.1
+
+- Migrating to Leaflet 1.0.3 from 0.7. This can bring breaking changes if you are using Leaflet features directly. Please refer to the [Leaflet documentation](http://leafletjs.com/reference-1.0.3.html). 
+- Adding multi-point directions. It is now possible to optimize a path with multiple waypoints.
+- Adding minZoom param on fitBounds
+- Fix bad center on venue zoom on large venues
+- Mapwize images (like qrCode and user position button) are now embedded in css
+- New direction path style
+- [Breaking change] Api.getDirections is now taking an array of waypoints (from, to, waypoints, directionOptions, cb). Backward compatibility has been kept on the map.showDirections function.
+- General improvements and bugs fixes
+
 ## Version 2.0.2
 
 - Optimized performances deep inside

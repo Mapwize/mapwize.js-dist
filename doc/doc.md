@@ -209,32 +209,55 @@ You can center the map on a given place by calling `centerOnPlace` with either a
 	map.centerOnPlace(place);
 	
 ### <a id="_fit-area"></a>Fit a given area
-You can set the map so that a given bound is completely displayed.
+You can set the map so that a given bound is completely displayed. This takes the margins into account.
 
 	map.fitBounds([
 	    [40.712, -74.227],
     	[40.774, -74.125]
-	]);
+	], [options]);
+
+Besides the <a href="http://leafletjs.com/reference-1.0.3.html#fitbounds-options">default options supported by leaflet</a>, `options` can also accept `minZoom` as an integer. Note that if `minZoom` is used, the entire bounds might not be displayed.
+	
 
 ----------
 
 ## <a id="_display-directions"></a>Display directions
 
-You can display directions on the map between 2 points.
+You can display directions on the map, either between 2 points or through a list of waypoints, as long as all the points are in the same venue.
 
-	map.showDirections(from, to, options, callback)
+The show direction method is the easyest to use and will take car of the API request and the display.
+
+	map.showDirections(from, to, waypoints, options, callback)
 	
-The from and the to parameters are objects which can have the following properties:
+You can also get the directions first using the API and then display all or portion of the directions using:
+
+	Mapwize.Api.getDirections(from, to, waypoints, options, callback);
+	map.startDirections(directions, options);
+	
+The from parameter is required and is an objects which can have the following properties:
 
 	{
-		placeId: string (the Id of a place. If used, latitude/longitude/floor are ignored)
-		placeListID: string (the Id of a placeList. If used, placeId/latitude/longitude/floor are ignored)
+		placeId: string (the Id of a place. If used, latitude/longitude/floor/venueId are ignored)
 		latitude: number (if used, all latitude/longitude/floor are required)
 		longitude: number (if used, all latitude/longitude/floor are required)
 		floor: number (if used, all latitude/longitude/floor are required)
+		venueId: string (the Id of the venue the latitude/longitude is in. Only required if the venue cannot be inferred from the to and the waypoints)
 	}
 
-The options parameter is an object {} however no particular properties are supported at the moment.
+The to parameter is required. It can be an object, with the same structure as the From, so the destination is fixed. It can also be an array, and in that case, the closest destination is used. It can also be an object refering to a placeList, and in that case the closest place of the list if used:
+
+	{
+		placeListId: string (the Id of a placeList)
+	}
+
+For the waypoints, you can specify an array with objects with the same strcuture as the From.
+
+The options parameter is an object supporting the following properties:
+
+	{
+		isAccessible: boolean (if set to true, only routes and connectors accessible to people with disabilities are used in the computation. Default is false)
+		waypointOptimize: boolean (if set to true, the order of the waypoints is optimized to minimize the total time of the directions. Default is false)
+	}
 
 The callback is a function returning an error object or directions object
 
@@ -248,8 +271,9 @@ Directions is an object containing the folloing properties:
 		from: from object as above,
 		to: to object as above,
 		distance: total distance in meters,
+		traveltime: total time in seconds,
 		bounds: bounds containing the total route,
-		routes: [ a list of routes on different floors
+		route: [ a list of paths on different floors
 			floor: the floor number of the route
 			path: the list of coordinates on the way points
 			distance: the distance of the route in meter
@@ -258,10 +282,14 @@ Directions is an object containing the folloing properties:
 			isEnd: if the route is the last one
 			fromFloor: the floor of the route before
 			toFloor: the floor of the route after
-		]
+			connectorTypeTo: the type of connector used to go to the next floor
+			connectorTypeFrom: the type of connector used to come from the previous floor
+		],
+		waypoints: list of waypoints, ordered,
+		subdirections: directions object with the same structure as the parent for each step between waypoints.
 	}
 
-To remove the directions, use the method `stopDirections`
+To remove the directions from the map, use the method `stopDirections`
 
 	map.stopDirections();
 
