@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Version 2.2
+
+- Added support for outdoor layers to be displayed on all floors
+- Added support for GeoJSON layers
+- Added API method getVenuesForOrganization and search
+- Improved documentation
+
 ## Version 2.1
 
 - Migrating to Leaflet 1.0.3 from 0.7. This can bring breaking changes if you are using Leaflet features directly. Please refer to the [Leaflet documentation](http://leafletjs.com/reference-1.0.3.html). 

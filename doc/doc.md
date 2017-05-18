@@ -1,10 +1,10 @@
 # Mapwize.js
 
-The SDK is built as a [Leaflet](http://leafletjs.com/) plugin. Leaflet is included in the package so you don't have to worry about importing it. Mapwize.js is all you need.
+The SDK is built as a [Leaflet 1.x](http://leafletjs.com/) plugin. Leaflet is included in the package so you don't have to worry about importing it. Mapwize.js is all you need.
 
 The package is exposed as `Mapwize`.
 
-Here are the specific instructions for using Mapwize. Please refer to the [Leaflet Doc](http://leafletjs.com/reference.html) for all the Leaflet related options.
+Here are the specific instructions for using Mapwize. Please refer to the [Leaflet 1.x Doc](http://leafletjs.com/reference-1.0.3.html) for all the Leaflet related options.
 
 ----------
 
@@ -19,6 +19,8 @@ Here are the specific instructions for using Mapwize. Please refer to the [Leafl
 	* <a href="#_center-venue">Center on venue</a>
 	* <a href="#_center-place">Center on place</a>
 	* <a href="#_fit-area">Fit given area</a>
+* <a href="#_floors">Floors</a>
+* <a href="#_places">Promoting and ignoring places</a>
 * <a href="#_display-directions">Display directions</a>
 * <a href="#_user-position">User position</a>
 	* <a href="#_display-position">Display user position</a>
@@ -35,18 +37,19 @@ Here are the specific instructions for using Mapwize. Please refer to the [Leafl
 * <a href="#_events">Listen for events</a>
 	* <a href="#_event-click">`click`</a>
 	* <a href="#_event-contextmenu">`contextmenu`</a>
-	* <a href="#_event-moveend">`moveend`</a>
-	* <a href="#_event-placeClick">`placeClick`</a>
-	* <a href="#_event-floorsChange">`floorsChange`</a>
-	* <a href="#_event-floorChange">`floorChange`</a>
-	* <a href="#_event-userPositionChange">`userPositionChange`</a>
 	* <a href="#_event-directionsStart">`directionsStart`</a>
 	* <a href="#_event-directionsStop">`directionsStop`</a>
+	* <a href="#_event-floorChange">`floorChange`</a>
+	* <a href="#_event-floorsChange">`floorsChange`</a>
 	* <a href="#_event-followUserModeChange">`followUserModeChange`</a>
+	* <a href="#_event-marginsChange">`marginsChange`</a>
+	* <a href="#_event-markerClick">`markerClick`</a>
+	* <a href="#_event-moveend">`moveend`</a>
+	* <a href="#_event-placeClick">`placeClick`</a>
+	* <a href="#_event-preferredLanguageChange">`preferredLanguageChange`</a>
+	* <a href="#_event-userPositionChange">`userPositionChange`</a>
 	* <a href="#_event-venueEnter">`venueEnter`</a>
 	* <a href="#_event-venueExit">`venueExit`</a>
-	* <a href="#_event-marginsChange">`marginsChange`</a>
-	* <a href="#_event-preferredLanguageChange">`preferredLanguageChange`</a>
 * <a href="#_qrCode">QR-code</a>
 * <a href="#_access-key">Access Key</a>
 * <a href="#_cache">Cache</a>
@@ -54,6 +57,7 @@ Here are the specific instructions for using Mapwize. Please refer to the [Leafl
 * <a href="#_place-style">Modify Place Style</a>
 * <a href="#_multilingual">Multilingual venues</a>
 * <a href="#_outdoorProvider">Outdoor map provider</a>
+* <a href="#_universes">Working with universes</a>
 * <a href="#_custom-data">Adding custom data to objects</a>
 * <a href="#_api">Api</a>
 	* <a href="#_api-venues">Venues</a>
@@ -63,6 +67,7 @@ Here are the specific instructions for using Mapwize. Please refer to the [Leafl
 	* <a href="#_api-beacons">Beacons</a>
 	* <a href="#_api-placeTypes">Place types</a>
 	* <a href="#_api-placeLists">Place lists</a>
+	* <a href="#_api-search">Search</a>
 
 ----------
 
@@ -73,55 +78,60 @@ Here are the specific instructions for using Mapwize. Please refer to the [Leafl
 Run `bower install mapwize.js-dist --save`
 
 Import Javascript and css files in your html:
-    
-    <script type="text/javascript" src="path/to/mapwizeFolder/dist/mapwize.js"></script>
-    <link rel="stylesheet" href="path/to/mapwizeFolder/dist/mapwize.css" />
-    
+```html
+<script type="text/javascript" src="path/to/mapwizeFolder/dist/mapwize.js"></script>
+<link rel="stylesheet" href="path/to/mapwizeFolder/dist/mapwize.css" />
+```
 ## <a id="_apiKey"></a>Setup your api key
-If you have to use a mapwize service without loading the map, you can setup your api key as follow:
+If you have to use a Mapwize service without loading the map, you can setup your api key as follow:
 
+```javascript
     Mapwize.setApiKey(<your_api_key>);
+```
 
 ## <a id="_display-map"></a>Display the Mapwize map
 The simplest way to display a Mapwize map:
+```html
+<html>
+	<head>
+		<script type="text/javascript" src="mapwize.js"></script>
+		<link rel="stylesheet" href="mapwize.css" />
+		<style>
+            #myMapId {
+                height: 500px;
+            }
+        </style>
+	</head>
+	<body>
 
-	<html>
-		<head>
-			<script type="text/javascript" src="mapwize.js"></script>
-			<link rel="stylesheet" href="mapwize.css" />
-			<style>
-                #myMapId {
-                    height: 500px;
-                }
-            </style>
-		</head>
-		<body>
+		<div id="myMapId"></div>
 
-			<div id="myMapId"></div>
-
-			<script>
-				Mapwize.map('myMapId', {
-        			apiKey: {{YOUR MAPWIZE API KEY HERE}}
-    			}, function (err, mapInstance) {
-    			    // This callback is called when the map is initialized (Or if there is an error during initialization)
+		<script>
+			Mapwize.map('myMapId', {
+        		apiKey: {{YOUR MAPWIZE API KEY HERE}}
+    		}, function (err, mapInstance) {
+		    	// This callback is called when the map is initialized (Or if there is an error during initialization)
     			    
-    			    if (err) {
-    			        console.error('An error occur during map initialization', err);
-    			    }
-    			    else {
-    			        console.log('map is now loaded');
-    			    }
-    			});
-			</script>
+	    		if (err) {
+			    	console.error('An error occur during map initialization', err);
+	    		}
+	    		else {
+		    		console.log('map is now loaded');
+	    		}
+	    	});
+		</script>
 
-		</body>
-	</html>
+	</body>
+</html>
+```
 
 There has to be a div for where the map is going to go. This div can have a css style like for example 
-	
+
+```css
 	#map {
     	position:absolute; top:0; bottom:0; width:100%; height: 100%;
     }
+```
 
 for a full screen display. Pay attention to have `<div id="myMapId"></div>` and **not** `<div id="myMapId"/>` as the second case will NOT work.
 
@@ -135,12 +145,15 @@ On the full map, everything is displayed:
 
 ## <a id="_map-constructor"></a>Map constructor
 
+```javascript
     Mapwize.map(mapId, options, callback);
     
-    mapId: The id of the html div where the map should be created
-    options: The options for the map (see further for all possible options)
-    callback: function(err, mapInstance) The callback function called when the map is initialized, with errors if any, and the map instance.
-
+    /*
+     * mapId: The id of the html div where the map should be created
+     * options: The options for the map (see further for all possible options)
+     * callback: function(err, mapInstance) The callback function called when the map is initialized, with errors if any, and the map instance.
+    */
+```
 Possible map options (in addition to <a href="http://leafletjs.com/reference.html#map-options">all leaflet options</a>):
 
  - `apiKey` *(String, **required**)* Your Mapwize api key, find it in the Admin portal under the  **Developers/Applications** menu
@@ -162,14 +175,17 @@ Possible map options (in addition to <a href="http://leafletjs.com/reference.htm
  - `language` *(String, optionnal, default: null)* <a href="#_multilingual">See the Multilingual section</a>
  - `outdoorMapProvider` *(String, optional, default:null) <a href="#_outdoorProvider">See the OutdoorMapProvider section</a>
 
+----------
+
 ## <a id="_limit-area"></a>Limit the visible area
 The area the user can browse can be limited to a given bound. To do so, use the Leaflet map options `maxBounds` and `minZoom` at initialization of the map. Example:
 
-	var map = Mapwize.map('map', {
-		maxBounds: [ [40.712, -74.227], [40.774, -74.125] ],
-		minZoom: 18
-	});
-
+```javascript
+var map = Mapwize.map('map', {
+	maxBounds: [ [40.712, -74.227], [40.774, -74.125] ],
+	minZoom: 18
+});
+```
 ----------
 
 ## <a id="_center-map"></a>Center the map
@@ -183,19 +199,19 @@ You can center the map on given coordinates defined by
 - zoom: between 0 and 21, default 19
 
 You can give the options at creation time:
-
-	var map = Mapwize.map('map', {
-		center: [40.712, -74.227],
-		zoom: 19,
-		floor: 2
-	});
-
+```javascript
+var map = Mapwize.map('map', {
+	center: [40.712, -74.227],
+	zoom: 19,
+	floor: 2
+});
+```
 Or dynamically:
-
-	map.centerOnCoordinates(latitude, longitude, [floor], [zoom]);
-	map.setFloor(2);
-	map.setZoom(19);
-
+```javascript
+map.centerOnCoordinates(latitude, longitude, [floor], [zoom]);
+map.setFloor(2);
+map.setZoom(19);
+```
 ### <a id="_center-venue"></a>Center on venue
 You can center the map on a venue by calling `centerOnVenue` with either a venueId or a venue object. Venue objects can be retrieved using the `api.getVenue` method.
 
@@ -204,20 +220,105 @@ You can center the map on a venue by calling `centerOnVenue` with either a venue
 	
 ### <a id="_center-place"></a>Center on place
 You can center the map on a given place by calling `centerOnPlace` with either a placeId or a place object. The floor is automatically selected based on the place. Place objects can be retrieved using the `api.getPlace` method.
-
-	map.centerOnPlace('placeId');
-	map.centerOnPlace(place);
-	
+```javascript
+map.centerOnPlace('placeId');
+map.centerOnPlace(place);
+```
 ### <a id="_fit-area"></a>Fit a given area
 You can set the map so that a given bound is completely displayed. This takes the margins into account.
-
-	map.fitBounds([
-	    [40.712, -74.227],
-    	[40.774, -74.125]
-	], [options]);
-
+```javascript
+map.fitBounds([
+	[40.712, -74.227],
+	[40.774, -74.125]
+], [options]);
+```
 Besides the <a href="http://leafletjs.com/reference-1.0.3.html#fitbounds-options">default options supported by leaflet</a>, `options` can also accept `minZoom` as an integer. Note that if `minZoom` is used, the entire bounds might not be displayed.
-	
+
+----------
+
+## <a id="_floors"></a>Floors
+
+Venues usually have multiple floors. The floor controller let the user change floor. But the floors can also be controlled programatically.
+
+#### Get
+Get the displayed floor
+```javascript
+    var floor = map.getFloor(); // Returns an int or null
+```
+
+Get the list of available floors on the current view
+```javascript
+    var floors = map.getFloors(); // Returns an array of int
+```
+
+#### Set
+Set the floor to be displayed
+```javascript
+    map.setFloor(floor); // floor must be an int or null
+```
+
+----------
+
+## <a id="_places"></a>Promoting and ignoring places
+
+By default, places are displayed (or not) based on their `isVisible` attributes. Their display order is based on their `order` property. And if they are clickable or not is based on the `isClickable` attribute. It is possible to modify the default behavior using the following methods.
+
+#### Promoting place
+You can promote places so they will be displayed on top of any other. The order in which promoted places are displayed is set by the order in the promotePlaces list. Please note that:
+
+- The first place in the promotePlace list is the first to be displayed
+- The display of the next promoted places depends of potential collisions with other places earlier in the list.
+- Promoted places are always considered visible, disregarding the `isVisible` attribute.
+
+To set the list of promoted places
+```javascript
+map.setPromotePlaces(listOfplaceIds);
+```
+
+To add a single place in promoted list
+```javascript
+map.addPromotePlace(placeId); // Add the place at the end of the list
+```
+
+To add a multiple places in promoted list
+```javascript
+map.addPromotePlaces(listOfplaceIds); // Add places at the end of the list
+```
+
+To remove place from promoted list
+```javascript
+map.removePromotePlace(placeId); // Remove place from the list
+```
+
+#### Ignoring place
+You can ignore places and therefore make sure they will never be displayed.
+
+To ignore a place
+```javascript
+map.addIgnorePlace(placeId);
+```
+
+To remove a place from the ignored list
+```javascript
+map.removeIgnorePlace(placeId);
+```
+
+To set the list of ignored places
+```javascript
+map.setIgnorePlaces(listOfplaceIds);
+```
+
+#### Ignoring the `isVisible` attribute
+Setting `setIgnoreIsVisible` to true you can enforce that all places will be displayed disregarding their initial settings
+```javascript
+map.setIgnoreIsVisible(boolean)
+```
+
+#### Ignoring the `isClickable` attribute
+By default places that are specified as non-clickable will have their click event disabled. Setting `setIgnoreIsClickable` to true you can enforce that all places will be clickable disregarding their initial settings
+```javascript
+map.setIgnoreIsClickable(boolean)
+```
 
 ----------
 
@@ -227,13 +328,17 @@ You can display directions on the map, either between 2 points or through a list
 
 The show direction method is the easyest to use and will take car of the API request and the display.
 
-	map.showDirections(from, to, waypoints, options, callback)
-	
+```javascript
+map.showDirections(from, to, waypoints, options, callback);
+```
+
 You can also get the directions first using the API and then display all or portion of the directions using:
 
-	Mapwize.Api.getDirections(from, to, waypoints, options, callback);
-	map.startDirections(directions, options);
-	
+```javascript
+Mapwize.Api.getDirections(from, to, waypoints, options, callback);
+map.startDirections(directions, options);
+```
+
 The from parameter is required and is an objects which can have the following properties:
 
 	{
@@ -250,7 +355,7 @@ The to parameter is required. It can be an object, with the same structure as th
 		placeListId: string (the Id of a placeList)
 	}
 
-For the waypoints, you can specify an array with objects with the same strcuture as the From.
+For the waypoints, you can specify an array with objects with the same structure as the From.
 
 The options parameter is an object supporting the following properties:
 
@@ -291,8 +396,9 @@ Directions is an object containing the folloing properties:
 
 To remove the directions from the map, use the method `stopDirections`
 
-	map.stopDirections();
-
+```javascript
+map.stopDirections();
+```
 ----------
 
 ## <a id="_user-position"></a>User position
@@ -301,23 +407,29 @@ To remove the directions from the map, use the method `stopDirections`
 
 By default, if the user position is available, it is displayed. You can prevent the user location from being displayed by setting the `showUserPosition` map option to false:
 
-	var map = Mapwize.map('map', {
-		showUserPosition: false
-	});
+```javascript
+var map = Mapwize.map('map', {
+	showUserPosition: false
+});
+```
 
 If `showUserPosition` is not false, the control proposing the user to go to its position is displayed by default. You can disable it by setting the `showUserPositionControl` map option to false:
 
-	var map = Mapwize.map('map', {
-		showUserPositionControl: false
-	});
+```javascript
+var map = Mapwize.map('map', {
+	showUserPositionControl: false
+});
+```
 
 ### <a id="_use-browser"></a>Use browser location
 
 By default, the user position is acquired from the web browser if available. You can disable it by setting the `useBrowserLocation` map option to false:
 
-	var map = Mapwize.map('map', {
-		useBrowserLocation: false
-	});
+```javascript
+var map = Mapwize.map('map', {
+	useBrowserLocation: false
+});
+```
 
 ### <a id="_follow-user"></a>Follow user mode
 
@@ -325,21 +437,26 @@ The follow user mode allows to have the map moving as the position is updated.
 
 You can manage the followUserMode using the following commands:
 
-	map.getFollowUserMode()
-	map.setFollowUserMode(true/false);
-	
+```javascript
+map.getFollowUserMode();
+map.setFollowUserMode(true or false);
+```
+
 ### <a id="_center-user"></a>Center map on user position
 
 To center the map on the current user position, you can use the `centerOnUser` method. The method takes a minZoom parameter. If the current zoom of the map is lower than minZoom, then the map is zoomed to minZoom.	
 
-	map.centerOnUser(19);
+```javascript
+map.centerOnUser(19);
+```
 
 ### <a id="_get-user"></a>Get user position
 
 You can get the current user position using the method
 
-	map.getUserPosition()
-	
+```javascript
+map.getUserPosition();
+```
 The returned object has the following properties:
 
 	{
@@ -355,20 +472,24 @@ The returned object has the following properties:
 
 You can manually set the user position by using the `setUserPosition` method:
 
-	map.setUserPosition({
-		latitude: 40.712, 
-		longitude: -74.227,
-		floor: 2,
-		accuracy: 5
-	});
-		
+```javascript
+map.setUserPosition({
+	latitude: 40.712, 
+	longitude: -74.227,
+	floor: 2,
+	accuracy: 5
+});
+```
+
 The accuracy is specified in meters. At this point the accuracy is only on horizontal position. There is no accuracy on floor.
 	
 If the followUserMode is enabled, then this methods will have as consequence to move the map. Otherwize, only the user position dot will be moved.
 
 When the setUserPosition method is used, the position of the user is locked on the provided position until setUserPosition is called again. If you then want to unlock the positon and use the default position given by the browser for example, then you need to call
 
-	map.unlockUserPosition();
+```javascript
+map.unlockUserPosition();
+```
 	
 ### <a id="_multiple-sources"></a>Using multiple measurement sources
 
@@ -378,7 +499,9 @@ To handle this situation, Mapwize allows you to send different measurements from
 
 To do so, use the method
 
-	map.newUserPositionMeasurement(measurement)
+```javascript
+map.newUserPositionMeasurement(measurement);
+```
 
 where measurement is an object with the following properties
 
@@ -398,7 +521,9 @@ The method setUserPosition overrules all the previous rules and sets the user po
 ### <a id="_set-heading"></a>Setting the user heading
 When a compass is available, it can be interesting to display the direction the user is looking. To do so, the method setUserHeading can be used, giving it an angle in degree. Example if the user is looking south:
 
-	map.setUserHeading(180);
+```javascript
+map.setUserHeading(180);
+```
 	
 To remove the display of the compass, simply set the angle to null.
 
@@ -414,7 +539,9 @@ The URLs always start with http://mwz.io/
 
 To load a URL, use the following method:
 
-	map.loadURL(url)
+```javascript
+map.loadURL(url);
+```
 
 The complete documentation regarding the URL format can be found [in the mapwize-url-scheme repository on github](https://github.com/Mapwize/mapwize-url-scheme).
 
@@ -422,7 +549,9 @@ The complete documentation regarding the URL format can be found [in the mapwize
 
 ## <a id="_urlsParser"></a>Parse a mapwize URL
 
-     Mapwize.Url.parse(url, callback);
+```javascript
+Mapwize.Url.parse(url, callback);
+```
      
 The callback function returns an error (if any) and the parsed object in the following format
     
@@ -449,7 +578,9 @@ You can add markers on the map to show a position of interest. At this points, m
 
 To add a marker, use the function
 
-	map.addMarker(position, callback)
+```javascript
+map.addMarker(position, callback);
+```
 
 where `position` is an **object** with the following properties (with same priority order):
 
@@ -476,7 +607,9 @@ The `callback` function take 2 params:
 
 To remove only one marker, use the function
 
-    map.removeMarker(markerId);
+```javascript
+map.removeMarker(markerId);
+```
 
 `markerId` is returned by <a href="#_markers-add">addMarker</a> callback
 
@@ -484,7 +617,9 @@ To remove only one marker, use the function
 	
 To remove all the markers at once, use the function
 
-	map.removeMarkers();
+```javascript
+map.removeMarkers();
+```
 
 ----------
 
@@ -495,117 +630,158 @@ The map will emit various events you can listen to.
 ### <a id="_event-click"></a>click
 Fired when the user clicks (or taps) the map.
 
-	map.on('click', function(e){
-		console.log(e);
-	});
+```javascript
+map.on('click', function (e) {
+	console.log(e);
+});
+```
 
 ### <a id="_event-contextmenu"></a>contextmenu
 Fired when the user pushes the right mouse button on the map. Also fired on mobile when the user holds a single touch for a second (also called long press).
 
-	map.on('contextmenu', function(e){
-		console.log(e);
-	});
-
-### <a id="_event-moveend"></a>moveend
-Fired when the view of the map stops changing (e.g. user stopped dragging the map).
-
-	map.on('moveend', function(e){
-		console.log(e);
-	});
-		
-### <a id="_event-placeClick"></a>place click
-Fired when a place is clicked.
-
-	map.on('placeClick', function(e){
-		console.log(e.place);
-	});
-
-### <a id="_event-floorsChange"></a>floors change
-Fired when the list of available floors at the currently viewed location is changed.
-
-	map.on('floorsChange', function(e){
-		console.log('Available floors at currently viewed location changed to ' + e.floors);
-	});
-
-### <a id="_event-floorChange"></a>floor change
-Fired when the currently viewed floor is changed.
-
-	map.on('floorChange', function(e){
-		console.log('Floor changed to ' + e.floor);
-	});
-
-### <a id="_event-userPositionChange"></a>user position change
-Fired when the user position has changed.
-
-	map.on('userPositionChange', function(e){
-		console.log('User position changed to ' + e.userPosition);
-	});
+```javascript
+map.on('contextmenu', function (e) {
+	console.log(e);
+});
+```
 
 ### <a id="_event-directionsStart"></a>directions start
 Fired when directions are displayed on the map.
 
-	map.on('directionsStart', function(e){
-		console.log('Directions have been loaded');
-	});
+```javascript
+map.on('directionsStart', function (e) {
+	console.log('Directions have been loaded');
+});
+```
 
 ### <a id="_event-directionsStop"></a>directions stop
 Fired when directions are stopped and not displayed on the map anymore.
 
-	map.on('directionsStop', function(e){
-		console.log('Directions have stopped');
-	});
+```javascript
+map.on('directionsStop', function (e) {
+	console.log('Directions have stopped');
+});
+```
+
+### <a id="_event-floorChange"></a>floor change
+Fired when the currently viewed floor is changed.
+
+```javascript
+map.on('floorChange', function (e) {
+	console.log('Floor changed to ' + e.floor);
+});
+```
+
+### <a id="_event-floorsChange"></a>floors change
+Fired when the list of available floors at the currently viewed location is changed.
+
+```javascript
+map.on('floorsChange', function(e) {
+	console.log('Available floors at currently viewed location changed to ' + e.floors);
+});
+```
 
 ### <a id="_event-followUserModeChange"></a>followUserMode change
 Fired when FollowUserMode changed.
 
-	map.on('followUserModeChange', function(e){
-		console.log('followUserMode new value: ' + e.followUserMode);
-	});
+```javascript
+map.on('followUserModeChange', function (e) {
+	console.log('followUserMode new value: ' + e.followUserMode);
+});
+```
+
+### <a id="_event-marginsChange"></a>margins change
+Fired when the map margins have changed
+
+```javascript
+map.on('marginsChange', function (e) {
+	console.log('margins: ' + e.margins);
+});
+```
+
+### <a id="_event-markerClick"></a>marker click
+Fired when a marker is clicked
+
+```javascript
+map.on('markerClick', function (e) {
+	console.log('marker id: ' + e.markerId);
+});
+```
+
+### <a id="_event-moveend"></a>moveend
+Fired when the view of the map stops changing (e.g. user stopped dragging the map).
+
+```javascript
+map.on('moveend', function (e) {
+	console.log(e);
+});
+```
+
+### <a id="_event-placeClick"></a>place click
+Fired when a place is clicked.
+
+```javascript
+map.on('placeClick', function (e) {
+	console.log(e.place);
+});
+```
+
+### <a id="_event-preferredLanguageChange"></a>preferred language change
+Fired when the map preferred language has changed
+
+```javascript
+map.on('preferredLanguageChange', function (e) {
+	console.log('Language: ' + e.language);
+});
+```
+
+### <a id="_event-userPositionChange"></a>user position change
+Fired when the user position has changed.
+
+```javascript
+map.on('userPositionChange', function (e) {
+	console.log('User position changed to ' + e.userPosition);
+});
+```
 
 ### <a id="_event-venueEnter"></a>venue enter
 Fired when a venue is displayed (zoom level >= 16 and center of the map inside the venue)
 
-	map.on('venueEnter', function(e){
-		console.log('Venue entered: ' + e.venue);
-	});
+```javascript
+map.on('venueEnter', function (e) {
+	console.log('Venue entered: ' + e.venue);
+});
+```
 
 ### <a id="_event-venueExit"></a>venue exit
-Fired when leaving the venue that was previously entered 
+Fired when leaving the venue that was previously entered
 
-	map.on('venueExit', function(e){
-		console.log('Venue exited: ' + e.venue);
-	});
-	
-### <a id="_event-marginsChange"></a>margins change
-Fired when the map margins have changed
-
-	map.on('marginsChange', function(e){
-		console.log('margins: ' + e.margins);
-	});
-	
-### <a id="_event-preferredLanguageChange"></a>preferred language change
-Fired when the map preferred language has changed
-
-	map.on('preferredLanguageChange', function(e){
-		console.log('Language: ' + e.language);
-	});
+```javascript
+map.on('venueExit', function (e) {
+	console.log('Venue exited: ' + e.venue);
+});
+```
 
 ----------
 
 ## <a id="_qrCode"></a>QR-code
 If you have retrieved a QR-code and want to pass it to the SDK, you can use the following method and pass the QR-code payload:
 
-	map.loadURL('payload')
+```javascript
+map.loadURL('payload');
+```
 	
 To add the QR-code scan button to the map (by default at bottom left):
 
-	var qrcodeControl = Mapwize.qrcodeControl({
-		onClick: function() {
-			/* scan the QR code and retrieve payload */  
-			map.loadURL(payload);
-		}
-	});
-	qrcodeControl.addTo(map);
+```javascript
+var qrcodeControl = Mapwize.qrcodeControl({
+	onClick: function () {
+		/* scan the QR code and retrieve payload */  
+		map.loadURL(payload);
+	}
+});
+qrcodeControl.addTo(map);
+```
 
 ----------
 
@@ -614,20 +790,24 @@ If you want to access private buildings, you need to specify the related access 
 
 You can pass the access key directly when initializing the map:
 
-	var map = Mapwize.map('map', {
-		accessKey: 'YOUR KEY'
-	});
+```javascript
+var map = Mapwize.map('map', {
+	accessKey: 'YOUR KEY'
+});
+```
 
 Or you can use the access method
 
-	map.access('key', function (result) {
-		if (result) {
-			// NO error, key is valid
-		}
-		else {
-			// ERROR, key is not valid
-		}
-	});
+```javascript
+map.access('key', function (result) {
+	if (result) {
+		// NO error, key is valid
+	}
+	else {
+		// ERROR, key is not valid
+	}
+});
+```
 
 ----------
 
@@ -638,7 +818,9 @@ The Time To Live of the cache is 5 minutes.
 
 If you want to force the map to refresh the cache and update itself, you can call the refresh method anytime.
 
-	map.refresh();
+```javascript
+map.refresh();
+```
 
 ----------
 
@@ -651,22 +833,28 @@ For this purpose, you can set a top and a bottom margin on the map. We garantee 
 
 To set the margins, you can pass them in pixels when you intialize the map:
 
-	var map = Mapwize.map('map', {
-		marginTop: 50,
-		marginBottom: 50
-	});
+```javascript
+var map = Mapwize.map('map', {
+	marginTop: 50,
+	marginBottom: 50
+});
+```
 
 Or you can change them at runtime
 
-	map.setTopMargin(50);
-	map.setBottomMargin(50);
+```javascript
+map.setTopMargin(50);
+map.setBottomMargin(50);
+```
 
 ----------
 
 ## <a id="_place-style"></a>Modify Place Style
 The style of a place can be modifyed directly within the SDK and can then override the style sent by the server. This is the best way to make changes in real-time on the map as it does not require to contact the Mapwize servers. For example, this can be used to display the availability of a meeting room.
 
-	map.setPlaceStyle(placeId, style);
+```javascript
+map.setPlaceStyle(placeId, style);
+```
 	
 where style is an object with the format:
 
@@ -683,16 +871,18 @@ where style is an object with the format:
 
 example:
 
-	{
-		markerUrl: 'http://myserver.com/image.png',
-       	strokeColor: '#C51586',
-        strokeOpacity: 1,
-        strokeWidth: 2,
-        fillColor: '#FFFFFF',
-        fillOpacity: 0.3,
-        labelBackgroundColor: null,
-        labelBackgroundOpacity: null
-	}
+```javascript
+{
+	markerUrl: 'http://myserver.com/image.png',
+	strokeColor: '#C51586',
+	strokeOpacity: 1,
+	strokeWidth: 2,
+	fillColor: '#FFFFFF',
+	fillOpacity: 0.3,
+	labelBackgroundColor: null,
+	labelBackgroundOpacity: null
+}
+```
 
 Note that if a parameter is null, the value defined on the server will be used.
 
@@ -703,7 +893,9 @@ Venues can support multiple languages.
 By default, venues are displayed in their default language configured on the backend-side.
 Using the function
 
-    map.setPreferredLanguage(language);
+```javascript
+map.setPreferredLanguage(language);
+```
     
 it is possible to set the preferred language of the user. If a venue supports the preferred language, it will be displayed in that language.
 Otherwise, it will be displayed in the default language.
@@ -721,6 +913,31 @@ If you don't set a specific provider, our default outdoor will be displayed
 
 ----------
 
+## <a id="universes"></a>Working with universes
+
+Defining multiple universes for a venue let you show different views with different permission levels. By default, the first universe which the user has access to is displayed.
+
+### Set universe for venue
+Tu display a specific universe for a venue, set it with the `setUniverseForVenue` method
+
+```javascript
+map.setUniverseForVenue(universeId, venueId);
+```
+
+This automaticaly refreshes the map if needed.
+
+### Get universe for venue
+To know wich universe is set for a venue use `getUniverseForVenue` method
+
+```javascript
+var universeId = map.getUniverseForVenue(venueId);
+```
+
+returns the universeId or null if no universe was previously set.
+
+----------
+
+
 ## <a id="_custom-data"></a>Adding custom data to objects
 To define specific behavior in your app for venues, places, placeLists or beacons, it is handy to attach custom data to those objects.
 Data can be added using the API or the backend interface.
@@ -736,7 +953,9 @@ You can access to the Mapwize api with the SDK by using `Mapwize.Api`.
 
 #### get
 
-    Mapwize.Api.venues.get(options, callback);
+```javascript
+Mapwize.Api.venues.get(options, callback);
+```
 
 ##### Arguments
 
@@ -757,21 +976,25 @@ Priority rules:
 
 ##### Example
 
-    // Using venue id
-    Mapwize.Api.venues.get('aValidVenueId', function (err, venue) {
-	    console.log(venue);
-    });
+```javascript
+// Using venue id
+Mapwize.Api.venues.get('aValidVenueId', function (err, venue) {
+	console.log(venue);
+});
     
-    // Using venue alias
-    Mapwize.Api.venues.get({alias: 'aValidVenueAlias'}, function (err, venue) {
-	    console.log(venue);
-    });
+// Using venue alias
+Mapwize.Api.venues.get({alias: 'aValidVenueAlias'}, function (err, venue) {
+	console.log(venue);
+});
+```
 
 #### list
 
 Get a list of venues 
 
-    Mapwize.Api.venues.list(options, callback);
+```javascript
+Mapwize.Api.venues.list(options, callback);
+```
 
 ##### Arguments
 
@@ -792,23 +1015,48 @@ Get a list of venues
 
 ##### Example
 
-    // with empty options
-    Mapwize.Api.venues.list({}, function (err, venues) {
-	    // venues contain all venues you can access
-	    console.log(venues);
-    });
+```javascript
+// with empty options
+Mapwize.Api.venues.list({}, function (err, venues) {
+	// venues contain all venues you can access
+	console.log(venues);
+});
     
-    // In defined area
-    Mapwize.Api.venues.list({latitudeMin: 0, latitudeMax: 1, longitudeMin: 0, longitudeMax: 1}, function (err, venues) {
-	    // venues contain all venues in the defined area
-	    console.log(venues);
-    });
+// In defined area
+Mapwize.Api.venues.list({latitudeMin: 0, latitudeMax: 1, longitudeMin: 0, longitudeMax: 1}, function (err, venues) {
+	// venues contain all venues in the defined area
+	console.log(venues);
+});
+```
+
+#### By organization
+
+Get a list of venues 
+
+```javascript
+Mapwize.Api.getVenuesForOrganization(organizationId, callback);
+```
+
+##### Arguments
+
+ 1. `organizationId`: *string*
+ 2. `callback`: *function(err, venues)* `venues` is an array of **venue** object.
+
+##### Example
+
+```javascript
+Mapwize.Api.getVenuesForOrganization('aValidOrganizationId', function (err, venues) {
+	console.log(venues);
+});
+```
 
 ### <a id="_api-places"></a>Places
 
 #### <a id="_api-places-get"></a>get
 
-    Mapwize.Api.places.get(options, callback);
+```javascript
+Mapwize.Api.places.get(options, callback);
+```
 
 ##### Arguments
 
@@ -831,21 +1079,25 @@ Priority rules:
 
 ##### Example
 
-    // Using venue id
-    Mapwize.Api.places.get('aValidPlaceId', function (err, place) {
-	    console.log(place);
-    });
+```javascript
+// Using venue id
+Mapwize.Api.places.get('aValidPlaceId', function (err, place) {
+	console.log(place);
+});
     
-    // Using venue alias
-    Mapwize.Api.places.get({alias: 'aValidPlaceAlias', venueId: 'aValideVenueId'}, function (err, place) {
-	    console.log(place);
-    });
+// Using venue alias
+Mapwize.Api.places.get({alias: 'aValidPlaceAlias', venueId: 'aValideVenueId'}, function (err, place) {
+	console.log(place);
+});
+```
 
 #### list
 
 Get a list of places 
 
-    Mapwize.Api.places.list(options, callback);
+```javascript
+Mapwize.Api.places.list(options, callback);
+```
 
 ##### Arguments
 
@@ -872,17 +1124,19 @@ Get a list of places
 
 ##### Example
 
-    // with empty options
-    Mapwize.Api.places.list({}, function (err, places) {
-	    // places contain all places you can access
-	    console.log(places);
-    });
+```javascript
+// with empty options
+Mapwize.Api.places.list({}, function (err, places) {
+	// places contain all places you can access
+	console.log(places);
+});
     
-    // In defined area
-    Mapwize.Api.places.list({latitudeMin: 0, latitudeMax: 1, longitudeMin: 0, longitudeMax: 1, floor: 1}, function (err, places) {
-	    // places contain all places in the defined area on floor 1 (and floor outdoor (null))
-	    console.log(places);
-    });
+// In defined area
+Mapwize.Api.places.list({latitudeMin: 0, latitudeMax: 1, longitudeMin: 0, longitudeMax: 1, floor: 1}, function (err, places) {
+	// places contain all places in the defined area on floor 1 (and floor outdoor (null))
+	console.log(places);
+});
+```
 
 ### <a id="_api-layers"></a>Layers
 
@@ -890,7 +1144,9 @@ Get a list of places
 
 Get a list of layers 
 
-    Mapwize.Api.layers.list(options, callback);
+```javascript
+Mapwize.Api.layers.list(options, callback);
+```
 
 ##### Arguments
 
@@ -913,25 +1169,29 @@ Get a list of layers
 
 ##### Example
 
-    // with empty options
-    Mapwize.Api.layers.list({}, function (err, layers) {
-	    // layers contain all layers you can access
-	    console.log(layers);
-    });
+```javascript
+// with empty options
+Mapwize.Api.layers.list({}, function (err, layers) {
+	// layers contain all layers you can access
+	console.log(layers);
+});
     
-    // In defined area
-    Mapwize.Api.layers.list({latitudeMin: 0, latitudeMax: 1, longitudeMin: 0, longitudeMax: 1, floor: 1}, function (err, layers) {
-	    // layers contain all layers in the defined area on floor 1 (and floor outdoor (null))
-	    console.log(layers);
-    });
+// In defined area
+Mapwize.Api.layers.list({latitudeMin: 0, latitudeMax: 1, longitudeMin: 0, longitudeMax: 1, floor: 1}, function (err, layers) {
+	// layers contain all layers in the defined area on floor 1 (and floor outdoor (null))
+	console.log(layers);
+});
+```
 
 ### <a id="_api-connectors"></a>Connector places
 
 #### list
 
-Get a list of venues 
+Get a list of connectorPlace 
 
-    Mapwize.Api.connectorPlaces.list(options, callback);
+```javascript
+Mapwize.Api.connectorPlaces.list(options, callback);
+```
 
 ##### Arguments
 
@@ -954,23 +1214,27 @@ Get a list of venues
 
 ##### Example
 
-    // with empty options
-    Mapwize.Api.connectorPlaces.list({}, function (err, connectorPlaces) {
-	    // connectorPlaces contain all connectorPlaces you can access
-	    console.log(connectorPlaces);
-    });
+```javascript
+// with empty options
+Mapwize.Api.connectorPlaces.list({}, function (err, connectorPlaces) {
+	// connectorPlaces contain all connectorPlaces you can access
+	console.log(connectorPlaces);
+});
     
-    // In defined area
-    Mapwize.Api.connectorPlaces.list({latitudeMin: 0, latitudeMax: 1, longitudeMin: 0, longitudeMax: 1, floor: 1}, function (err, connectorPlaces) {
-	    // connectorPlaces contain all connectorPlaces in the defined area on floor 1 (and floor outdoor (null))
-	    console.log(connectorPlaces);
-    });
+// In defined area
+Mapwize.Api.connectorPlaces.list({latitudeMin: 0, latitudeMax: 1, longitudeMin: 0, longitudeMax: 1, floor: 1}, function (err, connectorPlaces) {
+	// connectorPlaces contain all connectorPlaces in the defined area on floor 1 (and floor outdoor (null))
+	console.log(connectorPlaces);
+});
+```
 
 ### <a id="_api-beacons"></a>Beacons
 
 #### get
 
-    Mapwize.Api.beacons.get(options, callback);
+```javascript
+Mapwize.Api.beacons.get(options, callback);
+```
 
 ##### Arguments
 
@@ -994,21 +1258,25 @@ Priority rules:
 
 ##### Example
 
-    // Using venue id
-    Mapwize.Api.beacons.get('aValidBeaconId', function (err, beacon) {
-	    console.log(beacon);
-    });
+```javascript
+// Using venue id
+Mapwize.Api.beacons.get('aValidBeaconId', function (err, beacon) {
+	console.log(beacon);
+});
     
-    // Using venue alias
-    Mapwize.Api.beacons.get({alias: 'aValidBeaconAlias', venueId: 'aValidVenueId'}, function (err, beacon) {
-	    console.log(beacon);
-    });
+// Using venue alias
+Mapwize.Api.beacons.get({alias: 'aValidBeaconAlias', venueId: 'aValidVenueId'}, function (err, beacon) {
+	console.log(beacon);
+});
+```
 
 #### list
 
 Get a list of beacons 
 
-    Mapwize.Api.beacons.list(options, callback);
+```javascript
+Mapwize.Api.beacons.list(options, callback);
+```
 
 ##### Arguments
 
@@ -1023,17 +1291,21 @@ Get a list of beacons
 
 ##### Example
 
-    // with empty options
-    Mapwize.Api.beacons.list({venueId: 'aValidVenueId'}, function (err, beacons) {
-	    // beacons contain all beacons you can access in the venue
-	    console.log(beacons);
-    });
+```javascript
+// with empty options
+Mapwize.Api.beacons.list({venueId: 'aValidVenueId'}, function (err, beacons) {
+	// beacons contain all beacons you can access in the venue
+	console.log(beacons);
+});
+```
 
 ### <a id="_api-placeTypes"></a>Place types
 
 #### get
 
-    Mapwize.Api.placeTypes.get(options, callback);
+```javascript
+Mapwize.Api.placeTypes.get(options, callback);
+```
 
 ##### Arguments
 
@@ -1042,15 +1314,19 @@ Get a list of beacons
 
 ##### Example
 
-    Mapwize.Api.placeTypes.get('aValidePlaceTypeId', function (err, placeType) {
-	    console.log(placeType);
-    });
+```javascript
+Mapwize.Api.placeTypes.get('aValidePlaceTypeId', function (err, placeType) {
+	console.log(placeType);
+});
+```
 
 ### <a id="_api-placeLists"></a>Place Lists
 
 #### get
 
-    Mapwize.Api.placeLists.get(options, callback);
+```javascript
+Mapwize.Api.placeLists.get(options, callback);
+```
 
 ##### Arguments
 
@@ -1072,21 +1348,25 @@ Priority rules:
 
 ##### Example
 
-    // Using placeList id
-    Mapwize.Api.placeLists.get('aValidePlaceListId', function (err, placeList) {
-	    console.log(placeList);
-    });
+```javascript
+// Using placeList id
+Mapwize.Api.placeLists.get('aValidePlaceListId', function (err, placeList) {
+	console.log(placeList);
+});
     
-    // Using placeList alias
-    Mapwize.Api.placeLists.get({alias: 'aValidePlaceListAlias', venueId: 'aValidVenueId'}, function (err, placeList) {
-	    console.log(placeList);
-    });
+// Using placeList alias
+Mapwize.Api.placeLists.get({alias: 'aValidePlaceListAlias', venueId: 'aValidVenueId'}, function (err, placeList) {
+	console.log(placeList);
+});
+```
 
 #### list
 
 Get a list of placeLists 
 
-    Mapwize.Api.placeLists.list(options, callback);
+```javascript
+Mapwize.Api.placeLists.list(options, callback);
+```
 
 ##### Arguments
 
@@ -1101,8 +1381,42 @@ Get a list of placeLists
 
 ##### Example
 
-    // with empty options
-    Mapwize.Api.placeLists.list({venueId: 'aValidVenueId'}, function (err, placeLists) {
-	    // placeLists contain all placeLists you can access in the venue
-	    console.log(placeLists);
-    });
+```javascript
+// with empty options
+Mapwize.Api.placeLists.list({venueId: 'aValidVenueId'}, function (err, placeLists) {
+	// placeLists contain all placeLists you can access in the venue
+	console.log(placeLists);
+});
+```
+
+### <a id="_api-search"></a>Search
+
+Search in places, placeLists and venues
+
+```javascript
+Mapwize.Api.search(query, options, callback);
+```
+
+#### Arguments
+
+ 1. `query`: *string*
+ 2. `options`: *object*
+ 3. `callback`: *function(err, results)* `results` is an array of **place**, **placeList** or **venue** objects.
+
+`options` is an object as:
+
+    {
+	    venueId: (string),
+	    universeId: (string),
+	    objectClass: (array of string) can contain ['place', 'placeList', 'venue']
+    }
+
+#### Example
+
+```javascript
+// with empty options
+Mapwize.Api.search('what you want to find', {venueId: 'aValidVenueId'}, function (err, results) {
+    // If objectClass is empty, all type can be returned
+    console.log(results);
+});
+```
