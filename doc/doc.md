@@ -21,6 +21,7 @@ Here are the specific instructions for using Mapwize. Please refer to the [Leafl
 	* <a href="#_fit-area">Fit given area</a>
 * <a href="#_floors">Floors</a>
 * <a href="#_places">Promoting and ignoring places</a>
+* <a href="#_externalplaces">Using places that are not managed on the Mapwize plaform</a>
 * <a href="#_display-directions">Display directions</a>
 * <a href="#_user-position">User position</a>
 	* <a href="#_display-position">Display user position</a>
@@ -164,6 +165,7 @@ Possible map options (in addition to <a href="http://leafletjs.com/reference.htm
  - `displayPlacesOptions` *(Object, optionnal, default: {})*
  - `displayConnectors` *(Boolean, optionnal, default: true)* If `true`, Mapwize **connectors** are displayed on the map
  - `displayFloorControl` *(Boolean, optionnal, default: true)* If `true`, the Floor Control is added on the map
+ - `displayMarkerOptions`*(Object, optionnal, default: null)* See marker part for details.
  - `floorControlOptions` *(Object, optionnal, default: {})* 
  - `cacheParams` *(Object, optionnal, default: {})* Sent with each Mapwize api request. <a href="https://github.com/Mapwize/mapwize-api-doc">See Mapwize api doc</a>
  - `floor` *(Integer, optionnal, default: 0)* <a href="#_center-coordinates">Sets the initial floor</a>
@@ -174,6 +176,7 @@ Possible map options (in addition to <a href="http://leafletjs.com/reference.htm
  - `marginBottom` *(Integer, optionnal, default: 0)* <a href="#_margins">See the Margins section</a>
  - `language` *(String, optionnal, default: null)* <a href="#_multilingual">See the Multilingual section</a>
  - `outdoorMapProvider` *(String, optional, default:null) <a href="#_outdoorProvider">See the OutdoorMapProvider section</a>
+ - `mainColor` *(String, optional, default: #C51586)* changes the main color for the user position marker, direction path and floor control. (The marker can be customised using displayMarkerOptions. The user position control cannot be customised but it can be hidden using `showUserPositionControl` option)
 
 ----------
 
@@ -319,6 +322,53 @@ By default places that are specified as non-clickable will have their click even
 ```javascript
 map.setIgnoreIsClickable(boolean)
 ```
+
+----------
+
+## <a id="_externalplaces"></a>Using places that are not managed on the Mapwize plaform
+You can add places on the map coming from your own data set, that are not hosted on the Mapwize platform. 
+To do so, set the list of external places using the `setExternalPlaces` method on the map object.
+ 
+```javascript
+map.setExternalPlaces(externalPlaces)
+```
+
+The place object need to have at least the 4 following attributes:
+
+- venueId: string with the id of the venue the place belongs to
+- floor: integer with the floor number of the place
+- translations: array of {title, subTitle, details, language} strings that define what text need to be displayed on the map
+- geometry: geojson geometry object with the position of the place 
+
+Example:
+
+```
+{
+	venueId: '56c2ea3402275a0b00fb00ac',
+    floor: 0,
+    translations:[{title: 'External place', details: '', language: 'en'}],
+	geometry: {
+		type: 'Polygon',
+		coordinates: [[[4.5993915013968945,49.742717037274765],[4.599440451711416,49.74270013759909],[4.599408432841301,49.74266146331921],[4.599359482526779,49.742678363008345],[4.5993915013968945,49.742717037274765]]]
+	}
+}
+```
+
+You can also add an _id field to the place. The _id is only useful if you want to refer to methods that uses place ids like promote.
+
+The folowing attributes are also available:
+
+- placeTypeId: id of a Mapwize placeType that defines a default style
+- style: a style object for the place. See the style section for details
+- data: a free json object that is returned in any callback like placeClick
+- isClickable: set to false to disable click
+- isVisible: set to false to make it invisible
+- marker: {latitude, longitude} object to specify the position of the place marker
+- order: integer to define the order of display. Places are displayed in ascending order. Default 0
+
+Please note that in the current implementation, external places do not support universes.
+
+To remove the external places, simply pass an empty table to setExternalPlaces: `setExternalPlaces([])`
 
 ----------
 
@@ -571,6 +621,18 @@ The callback function returns an error (if any) and the parsed object in the fol
     }
 
 ## <a id="_markers"></a>Markers
+
+### <a id="_markers-style"></a>Styling
+
+You can use your own marker by passing the following options on the map creation.
+Please refer to Leaflet for iconSize and iconAnchor options.
+```javascript
+displayMarkerOptions: {
+	iconUrl: 'your-url?png',
+	iconSize: [x, y],
+	iconAnchor: [x, y]
+}
+```
 
 ### <a id="_markers-add"></a>Adding marker
 

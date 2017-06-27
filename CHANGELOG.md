@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 2.3
+
+- Added support for external places
+- Added support for changing user position and directions color
+- Added support for customizing default marker icon
+
 ## Version 2.2
 
 - Added support for outdoor layers to be displayed on all floors
