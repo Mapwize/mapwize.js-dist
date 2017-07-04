@@ -169,6 +169,7 @@ Possible map options (in addition to <a href="http://leafletjs.com/reference.htm
  - `floorControlOptions` *(Object, optionnal, default: {})* 
  - `cacheParams` *(Object, optionnal, default: {})* Sent with each Mapwize api request. <a href="https://github.com/Mapwize/mapwize-api-doc">See Mapwize api doc</a>
  - `floor` *(Integer, optionnal, default: 0)* <a href="#_center-coordinates">Sets the initial floor</a>
+ - `bounds` *(L.LatLngBounds, optionnal, default: null)* <a href="#_center-coordinates">Sets the initial bounds</a>
  - `showUserPosition` *(Boolean, optionnal, default: true)* <a href="#_display-position">See the User Position section</a>
  - `showUserPositionControl` *(Boolean, optionnal, default: true)* <a href="#_display-position">See the User Position section</a>
  - `useBrowserLocation` *(Boolean, optionnal, default: true)* <a href="#_use-browser">See the User Position section</a>
@@ -200,6 +201,8 @@ You can center the map on given coordinates defined by
 - longitude
 - floor: if not set or if does not exist at that location, the floor is set to 'null'
 - zoom: between 0 and 21, default 19
+
+or specify the bounds and the floor to be displayed
 
 You can give the options at creation time:
 ```javascript

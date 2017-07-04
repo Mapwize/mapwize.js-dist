@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 2.3.1
+
+- Added bounds map options
+
 ## Version 2.3
 
 - Added support for external places
