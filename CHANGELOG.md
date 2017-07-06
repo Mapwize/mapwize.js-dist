@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 2.3.2
+
+- Fix bad style on direction change floor marker on some devices
+
 ## Version 2.3.1
 
 - Added bounds map options
