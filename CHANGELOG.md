@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## Version 2.3.4
+
+- Improved analytics
+- Fix issue with followUserMode being disabled when it should not
+- Fix compatibility issue with IE11
+
+## Version 2.3.3
+
+- Fix: main color also affect user position
+
 ## Version 2.3.2
 
 - Fix bad style on direction change floor marker on some devices
