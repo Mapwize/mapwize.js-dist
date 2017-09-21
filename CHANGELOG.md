@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 2.2.1
+
+- Improving analytics
+
 ## Version 2.2
 
 - Added support for outdoor layers to be displayed on all floors
