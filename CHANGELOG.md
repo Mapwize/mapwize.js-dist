@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Version 2.3.5
+
+- Fix analytics custom dimensions
+- Fix order in places display
+- Fix bug on order for outdoor layers
+- Improved performances
+- Improved API error handling
+
 ## Version 2.3.4
 
 - Improved analytics
