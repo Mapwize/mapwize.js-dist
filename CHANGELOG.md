@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 2.3.6
+
+- Improved floor control
+
 ## Version 2.3.5
 
 - Fix analytics custom dimensions
