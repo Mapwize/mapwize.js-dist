@@ -593,8 +593,9 @@ The URLs always start with http://mwz.io/
 To load a URL, use the following method:
 
 ```javascript
-map.loadURL(url);
+map.loadURL(url, callback);
 ```
+Same callback as Mapwize.Url.parse function (<a href="#_urlsParser">see below</a>)
 
 The complete documentation regarding the URL format can be found [in the mapwize-url-scheme repository on github](https://github.com/Mapwize/mapwize-url-scheme).
 
@@ -622,6 +623,25 @@ The callback function returns an error (if any) and the parsed object in the fol
         - direction: direction object if it's a direction url, or null 
         - bounds: the bounds that should be set to the map to properly display the url 
     }
+    
+#### Example
+````javascript
+Mapwize.Url.parse(url, function (err, parsedUrl) {
+  // In case of error, parsedUrl might still contain useful information.
+
+  if (parsedUrl) {
+    if (err) {
+      console.error(err);
+      // Show user a warning
+    }
+    // Do something with parsedUrl
+  }
+  else {
+    console.error(err);
+  }
+});
+
+````
 
 ## <a id="_markers"></a>Markers
 

@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## Version 2.4.0
+
+- Added support for decimal floors
+- Url parser now returns the venue for place or beacon urls for which the place or beacon is not found
+- Fix media permission issue on Firefox
+
+## Version 2.3.7
+
+- Fix bug with useBrowserLocation map option
+- Add support for dashes (-) in object alias
+
 ## Version 2.3.6
 
 - Improved floor control
