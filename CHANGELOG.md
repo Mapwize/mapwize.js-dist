@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Version 2.4.1
+
+- Prevent crash on browsers not supporting playing with document.styleSheets
+- Prevent firing venueExit with empty content
+- Use api.mapwize.io by default
+- Load first accessible universe by default
+- Add demo with 2 maps on the same page
+
 ## Version 2.4.0
 
 - Added support for decimal floors

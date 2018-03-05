@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
+
+    <script src="../dist/mapwize.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../dist/mapwize.css" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #map1 {
+            position:absolute; top:0; left:0; width:500px;
+            height: 300px;
+        }
+        #map2 {
+            position:absolute; top:350px; left:0; width:500px;
+            height: 300px;
+        }
+    </style>
+
+
+    <title>Mapwize.js Test</title>
+
+</head>
+<body>
+
+<div id="map1"></div>
+<div id="map2"></div>
+
+
+<script>
+
+    Mapwize.config.SERVER = "https://www.mapwize.io";
+
+    var bounds = new L.LatLngBounds(
+            new L.LatLng(50.632402, 3.019191),
+            new L.LatLng(50.633898, 3.021409)
+    );
+
+    var map1 = Mapwize.map('map1', {
+        apiKey: '1f04d780dc30b774c0c10f53e3c7d4ea',      // PASTE YOU API KEY HERE !!! This is a demo key. It is not allowed to use it for production. The key might change at any time without notice.
+        accessKey: 'demo'
+    }, function () {
+        map1.centerOnVenue('56c2ea3402275a0b00fb00ac'); // Demo
+    });
+
+    var map2 = Mapwize.map('map2', {
+        apiKey: '1f04d780dc30b774c0c10f53e3c7d4ea',      // PASTE YOU API KEY HERE !!! This is a demo key. It is not allowed to use it for production. The key might change at any time without notice.
+        accessKey: 'demo'
+    }, function () {
+        map2.centerOnVenue('56c2ea3402275a0b00fb00ac'); // Demo
+    });
+
+</script>
+
+</body>
+</html>
