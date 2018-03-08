@@ -252,7 +252,7 @@ Get the displayed floor
     var floor = map.getFloor(); // Returns an int or null
 ```
 
-Get the list of available floors on the current view
+Get the list of active floors on the current view. A floor is considered active if the geometry of one layer of that floor is intersecting with the visible region on the screen.
 ```javascript
     var floors = map.getFloors(); // Returns an array of int
 ```
