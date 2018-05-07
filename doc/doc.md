@@ -57,7 +57,6 @@ Here are the specific instructions for using Mapwize. Please refer to the [Leafl
 * <a href="#_margins">Margins</a>
 * <a href="#_place-style">Modify Place Style</a>
 * <a href="#_multilingual">Multilingual venues</a>
-* <a href="#_outdoorProvider">Outdoor map provider</a>
 * <a href="#_universes">Working with universes</a>
 * <a href="#_custom-data">Adding custom data to objects</a>
 * <a href="#_api">Api</a>
@@ -176,7 +175,6 @@ Possible map options (in addition to <a href="http://leafletjs.com/reference.htm
  - `marginTop` *(Integer, optionnal, default: 0)* <a href="#_margins">See the Margins section</a>
  - `marginBottom` *(Integer, optionnal, default: 0)* <a href="#_margins">See the Margins section</a>
  - `language` *(String, optionnal, default: null)* <a href="#_multilingual">See the Multilingual section</a>
- - `outdoorMapProvider` *(String, optional, default:null) <a href="#_outdoorProvider">See the OutdoorMapProvider section</a>
  - `mainColor` *(String, optional, default: #C51586)* changes the main color for the user position marker, direction path and floor control. (The marker can be customised using displayMarkerOptions. The user position control cannot be customised but it can be hidden using `showUserPositionControl` option)
 
 ----------
@@ -613,7 +611,6 @@ The callback function returns an error (if any) and the parsed object in the fol
         - venue: the venue object to which the url relates.
         - universe: the universe object if the ?u parameter is specified in the url 
         - language: the language code if the ?l parameter is specified in the url 
-        - outdoorMapProvider: the outdoor map provider if the ?outdoorMapProvider is specified in the url
         - accessKey: the accessKey if the ?k parameter is specified in the url.
         - floor: the value of the floor if specified in the url, or the floor of the place, or the start floor of the direction 
         - zoom: the zoom if ?z parameter is specified 
@@ -988,13 +985,6 @@ Otherwise, it will be displayed in the default language.
 Languages are defined using 2 letter codes like 'en', 'fr', ...
 
 Setting the preferred language to null displays all venues in their default language.
-
-----------
-
-## <a id="_outdoorProvider"></a>Outdoor map provider
-Available map provider : 'mapbox-street', 'mapbox', 'mapbox-satellite', 'tomtom-street', 'tomtom', 'none'
-
-If you don't set a specific provider, our default outdoor will be displayed
 
 ----------
 

@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 2.6.0
+
+- Using outdoor.mapwize.io by default for the outdoor map
+- The `outdoorMapProvider` map option has been removed. Use `OUTDOOR_TILES_URL` in the config instead.
+
 ## Version 2.5.0
 
 - Changing floors behaviour to only have in the floor selector the floors for which there is a layer visible on the screen. Changed the behaviour of getFloors and floorsChange accordingly.
