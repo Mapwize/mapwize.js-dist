@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Version 2.6.1
+
+- Use venue defaultCenter and defaultZoom
+- Add Mapwize attribution link
+- Fix latitude, longitude and floor can be negative in url parser
+- Update doc to better fit in docs.mapwize.io
+
 ## Version 2.6.0
 
 - Using outdoor.mapwize.io by default for the outdoor map
