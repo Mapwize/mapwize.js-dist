@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 2.6.2
+
+- Preventing long directions from exiting venue
+- Making data available in beacons
+
 ## Version 2.6.1
 
 - Use venue defaultCenter and defaultZoom

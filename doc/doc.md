@@ -597,7 +597,7 @@ The callback function returns an error (if any) and the parsed object in the fol
     }
     
 #### Example
-`
+
 ```javascript
 Mapwize.Url.parse(url, function (err, parsedUrl) {
   // In case of error, parsedUrl might still contain useful information.
@@ -613,8 +613,7 @@ Mapwize.Url.parse(url, function (err, parsedUrl) {
     console.error(err);
   }
 });
-
-````
+```
 
 ## Markers
 
@@ -661,6 +660,19 @@ OR
 The `callback` function take 2 params:
 (*Object*) `err` if an error has occurred
 (*String*) `markerId` an uniq id for this marker
+
+```javascript
+map.addMarker({
+	latitude: 40.712, 
+	longitude: -74.227,
+	floor: 2,
+}, function (err, markerId) {
+	if (err) {
+		return console.error('addMarker failed', err);
+	}
+	map.removeMarker(markerId);
+});
+```
 
 ### Remove marker
 #### Remove one marker
